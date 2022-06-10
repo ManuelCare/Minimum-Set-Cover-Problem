@@ -1,21 +1,54 @@
 #include "utils.h"
 
 void printSet(set<string> S){
-    set<string>::iterator it = S.begin();
-    cout << *it;
-    for (;it!=S.end(); ++it)
-        cout << " " << *it; 
+    if(S.empty())
+        cout << "conjunto vacio";
+    else{
+        set<string>::iterator it = S.begin();
+        cout << *it;
+        ++it;
+        for (;it!=S.end(); ++it)
+            cout << " " << *it; 
+    }
     cout << endl;
 }
 
 void printSet(set<set<string>> S){
-    for (set<set<string>>::iterator it=S.begin(); it!=S.end(); ++it)
-        printSet(*it);
+    if(S.empty())
+        cout << "conjunto vacio";
+    else
+        cout << endl;
+        for (set<set<string>>::iterator it=S.begin(); it!=S.end(); ++it){
+            cout << "  "; printSet(*it);
+            }
     cout << endl;
 }
 
-void setSubstract(set<string> &A, set<string> B){ // Itera por los n elementos de B para eliminarlos de A. O(n)
-    for (set<string>::iterator it=B.begin(); it!=B.end(); ++it){
-        A.erase(*it);
+set<string> maxS(set<set<string>> F, set<string> U){
+    set<string> S,t;
+    int max=0;
+    for (set<set<string>>::iterator it=F.begin(); it!=F.end(); ++it){
+        t=setIntersection(U,*it);
+        if(t.size()>=max){
+            S=*it;
+            max=t.size();
+        }
     }
+    return S;
+}
+
+set<string> setUnion(set<string> A, set<string> B){
+    set<string> C;
+    set_union(A.begin(), A.end(), B.begin(), B.end(),inserter(C, C.begin()));
+    return C;
+}
+set<string> setIntersection(set<string> A, set<string> B){
+    set<string> C;
+    set_intersection(A.begin(), A.end(), B.begin(), B.end(),inserter(C, C.begin()));
+    return C;
+}
+set<string> setDifference(set<string> A, set<string> B){    
+    set<string> C;
+    set_difference(A.begin(), A.end(), B.begin(), B.end(),inserter(C, C.begin()));
+    return C;
 }
