@@ -14,5 +14,8 @@ set<string> maxS(set<set<string>> F, set<string> U);
 set<string> setUnion(set<string> A, set<string> B);
 set<string> setIntersection(set<string> A, set<string> B);
 set<string> setDifference(set<string> A, set<string> B);
+set<set<string>> insertionTo(set<set<string>> A,set<string> B);
+set<set<string>> removeFrom(set<set<string>> A, set<string> B);
+set<set<string>> returnClone(set<set<string>> A);
 
 #endif

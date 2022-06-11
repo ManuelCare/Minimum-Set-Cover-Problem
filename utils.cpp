@@ -52,3 +52,20 @@ set<string> setDifference(set<string> A, set<string> B){
     set_difference(A.begin(), A.end(), B.begin(), B.end(),inserter(C, C.begin()));
     return C;
 }
+
+set<set<string>> removeFrom(set<set<string>> A, set<string> B){
+    set<set<string>> C (A); // Clona todo lo de A en C 
+    C.erase(B); // Borramos a B de C
+    return C;
+}
+
+set<set<string>> insertionTo(set<set<string>> A,set<string> B){
+    set<set<string>> C (A); // Clona todo lo de A en C
+    C.insert(B); // Insertamos a B en C
+    return C;
+}
+
+set<set<string>> returnClone(set<set<string>> A){
+    set<set<string>> C (A); // Clona todo lo de A en C
+    return C;
+}
