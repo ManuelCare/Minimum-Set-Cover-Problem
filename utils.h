@@ -1,5 +1,5 @@
 #ifndef UTILS_H
-#define UTIlS_H
+#define UTILS_H
 
 #include <set>
 #include <string>
@@ -17,5 +17,7 @@ set<string> setDifference(set<string> A, set<string> B);
 set<set<string>> insertionTo(set<set<string>> A,set<string> B);
 set<set<string>> removeFrom(set<set<string>> A, set<string> B);
 set<set<string>> returnClone(set<set<string>> A);
+set<set<string>> returnAloneES(set<set<string>> &F, set<string> &X, set<set<string>> C, set<string> &P);
+bool setContains(set<string> A, string b);
 
 #endif
