@@ -18,6 +18,8 @@ set<set<string>> insertionTo(set<set<string>> A,set<string> B);
 set<set<string>> removeFrom(set<set<string>> A, set<string> B);
 set<set<string>> returnClone(set<set<string>> A);
 set<set<string>> returnAloneES(set<set<string>> &F, set<string> &X, set<set<string>> C, set<string> &P);
+set<set<string>> returnAlone(set<string> &X, set<set<string>> &F);
 bool setContains(set<string> A, string b);
+
 
 #endif
