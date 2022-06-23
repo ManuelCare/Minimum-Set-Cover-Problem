@@ -9,6 +9,7 @@ set<set<string>> MSCClassicGreedy(set<string> X,set<set<string>> F);
 set<set<string>> MSCExhaustiveSearch(set<set<string>> F, set<string> X, set<set<string>> C, set<string> P,int n);
 set<set<string>> MSCExhaustiveSearchOp1(set<set<string>> F, set<string> X, set<set<string>> C, set<string> P,int n);
 set<set<string>> TopDownMSCExhaustiveSearchOp2(set<set<string>> F, set<string> X, set<set<string>> C, set<string> P,int n, int *R);
+set<set<string>> MSCClassicGreedyOptimize(set<string> X, set<set<string>> F, int k);
 
 
 int main(){ 
@@ -47,6 +48,12 @@ int main(){
     C1 = MSCExhaustiveSearch(F, X, C1, P1, F.size());
     cout << "TERMINADO!" << endl;
     cout << "C: ";printSet(C1);
+    
+    
+    cout<<"Calculando el MSCP con el algoritmo greedy clasico optimizado ...";
+    set<set<string>> C4 = MSCClassicGreedyOptimize(X,F,1);
+    cout<< "TERMINADO!" << endl;
+    cout << "C: ";printSet(C4);
 }
 
 set<set<string>> MSCExhaustiveSearch(set<set<string>> F, set<string> X, set<set<string>> C, set<string> P,int n){
@@ -107,6 +114,37 @@ set<set<string>> MSCClassicGreedy(set<string> X,set<set<string>> F){
         S=maxS(F,U);
         U=setDifference(U,S); //setSubstract: U = U-S
         C.insert(S);
+    }
+    return C;
+}
+
+
+set<set<string>> MSCClassicGreedyOptimize(set<string> X, set<set<string>> F, int k){   //K=2 es la union de dos cosos
+    set<string> U (X); // Sea U un conjunto copia de X, el universo.
+    set<set<string>> R (F); 
+    set<set<string>> C = returnAlone(U,R);  //Encuentra los conjuntos donde hay elemetos que solo estan en el mismo y los agregan a la solución C
+    set<string> S;
+    set<string> L (X);
+    set<set<string>> acum;
+    set<string> suma;
+    int cont = 0;
+    while(!U.empty()){
+        for(set<set<string>>::iterator it=R.begin(); it!=R.end(); ++it){
+            cont++;
+            acum.insert(*it);
+            suma = {};
+            if(cont%k==0){
+                for(set<set<string>>::iterator it1=acum.begin(); it1!=acum.end(); ++it1){
+                    suma = setUnion(suma, *it1);
+                }
+                S=maxS(R,U);
+                U=setDifference(U,S);
+                C.insert(S);
+                acum = {};
+            }
+        }
+
+       
     }
     return C;
 }
