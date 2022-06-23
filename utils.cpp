@@ -86,6 +86,33 @@ set<set<string>> returnAloneES(set<set<string>> &F, set<string> &X, set<set<stri
     F = G;
     return C;
 }
+
+set<set<string>> returnAlone(set<string> &X, set<set<string>> &F){   //Entran X con todas las key y F con todos los conjuntos y devuelve los conjuntos donde solo se repite una vez un elemento solo los que se repiten una vez
+    set<set<string>> C;
+    set<string> Temp;
+    int cont;
+    string letra;
+    for(set<string>::iterator it=X.begin(); it!=X.end(); ++it){     //*it
+        cont = 0;
+        for(set<set<string>>::iterator it2=F.begin(); it2!=F.end(); ++it2){
+            if(setContains(*it2,*it)){
+                cont++;
+                Temp = *it2;
+                letra = *it;
+            }
+        }
+        if(cont==1){
+            C.insert(Temp);
+            X.erase(letra);
+            F.erase(Temp);
+
+        } 
+    }
+
+    return C;
+}
+
+
 bool setContains(set<string> A, string b){   //Verifica si un string esta almacenado en un set
     set<string>::iterator it = A.find(b);
     if (it != A.end()){
