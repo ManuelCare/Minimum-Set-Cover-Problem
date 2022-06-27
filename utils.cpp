@@ -39,6 +39,10 @@ set<string> setUnion(set<string> A, set<string> B){
     set_union(A.begin(), A.end(), B.begin(), B.end(),inserter(C, C.begin()));
     return C;
 }
+set<string> returnClone(set<string> A){
+    set<string> C (A); // Clona todo lo de A en C
+    return C;
+} 
 set<string> setIntersection(set<string> A, set<string> B){
     set<string> C;
     set_intersection(A.begin(), A.end(), B.begin(), B.end(),inserter(C, C.begin()));
@@ -49,50 +53,25 @@ set<string> setDifference(set<string> A, set<string> B){
     set_difference(A.begin(), A.end(), B.begin(), B.end(),inserter(C, C.begin()));
     return C;
 }
-set<string> getUniverse(set<string> &X){
-    set<string> temp;
-    ifstream file("setcover.csv");
-    string line, Passport;
-    getline(file,line);
-    while(getline(file,line)){
-        stringstream ss(line);
-        getline(ss,Passport,',');
-        X.insert(Passport);
+set<string> setDifference(set<string> A, set<set<string>> B){    
+    for (set<set<string>>::iterator it=B.begin(); it!=B.end(); ++it){
+        A = setDifference(A,*it);
     }
-    file.close();
-    return X;
-}
-set<set<string>> getSets(set<string> X, set<set<string>> &F){
-    set<string> temp;
-    ifstream file("setcover.csv");
-    string line, Passport, Destination, Requirement,po;
-    getline(file,line);
-    while(getline(file,line)){
-        stringstream ss(line);
-        getline(ss,Passport,',');
-        getline(ss,Destination,',');
-        getline(ss,Requirement,',');
-        string pais = Passport;
-        temp.clear();
-        po = pais;
-        while(!file.eof() && pais == po){
-            if(Requirement == "visa free" ||Requirement =="-1")
-                temp.insert(Destination);
-            getline(file,line);
-            stringstream ss(line);
-            getline(ss,pais,',');
-            getline(ss,Destination,',');
-            getline(ss,Requirement,',');
-
-        }
-        F.insert(returnClone(temp));
-    }
-    file.close();
-    return F;   
+    return A;
 }
 set<set<string>> removeFrom(set<set<string>> A, set<string> B){
     set<set<string>> C (A); // Clona todo lo de A en C 
     C.erase(B); // Borramos a B de C
+    return C;
+}
+set<set<string>> setDifference(set<set<string>> A, set<set<string>> B){    
+    set<set<string>> C;
+    set_difference(A.begin(), A.end(), B.begin(), B.end(),inserter(C, C.begin()));
+    return C;
+}
+set<set<string>> setUnion(set<set<string>> A, set<set<string>> B){
+    set<set<string>> C;
+    set_union(A.begin(), A.end(), B.begin(), B.end(),inserter(C, C.begin()));
     return C;
 }
 set<set<string>> insertionTo(set<set<string>> A,set<string> B){
@@ -104,14 +83,37 @@ set<set<string>> returnClone(set<set<string>> A){
     set<set<string>> C (A); // Clona todo lo de A en C
     return C;
 }
-set<string> returnClone(set<string> A){
-    set<string> C (A); // Clona todo lo de A en C
-    return C;
-} 
+set<set<string>> maxSMod(set<set<string>> &F, set<string> U, int k){
+    int max=0,j,i;
+    set<string> t,temp1;
+    set<set<string>> temp, S;
+    set<set<string>>::iterator itemp;
+    i=0;
+    for(set<set<string>>::iterator it=F.begin(); it!=F.end(); ++it){
+        cout << i <<endl;
+        i++;
+        temp.clear();
+        itemp = it;
+        j=0;
+        while(itemp != F.end() && j<k){
+            temp.insert(*itemp);
+            temp1 = setUnion(temp1,*itemp);
+            itemp++;
+            j++;
+        }
+        t = setIntersection(U,temp1);
+        if(t.size()>=max){
+            S = returnClone(temp);
+            max = t.size();
+        }
+    }
+    F = setDifference(F,S);
+    return S;
+}
 set<set<string>> returnAloneES(set<set<string>> &F, set<string> &X, set<set<string>> C, set<string> &P){   //Entran X con todas las key y F con todos los conjuntos y devuelve los conjuntos donde solo se repite una vez un elemento solo los que se repiten una vez
-    set<string> Temp;
     int cont;
     string letra;
+    set<string> Temp;
     set<set<string>> G (F);
     for(set<string>::iterator it=X.begin(); it!=X.end(); ++it){
         cont = 0;
@@ -178,7 +180,6 @@ bool setContains(set<string> A, string b){   //Verifica si un string esta almace
     }
     return false;
 }
-
 void loadProblem(set<set<string>> &F, set<string> &U,int k){
     ifstream file("data/rail4284.txt");
     set<string> tempSet;
@@ -221,7 +222,6 @@ void loadExample(set<set<string>> &F, set<string> &U){
     set<string> s11 = {"y","z"};
     set<string> s12 = {"x","y"};
     F = {s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12};
-
 }
 void printTime(double time){
     double S;

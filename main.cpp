@@ -10,14 +10,11 @@ set<set<string>> MSCExhaustiveSearch(set<set<string>> F, set<string> X, set<set<
 set<set<string>> MSCExhaustiveSearchOp1(set<set<string>> F, set<string> X, set<set<string>> C, set<string> P,int n);
 set<set<string>> TopDownMSCExhaustiveSearchOp2(set<set<string>> F, set<string> X, set<set<string>> C, set<string> P,int n, int *R);
 set<set<string>> MSCClassicGreedyOptimize(set<string> X, set<set<string>> F, int k);
-/*int main(){
-    set<set<string>> F;
-    set<string> U;
-    loadProblem(F,U,1000);
-    printSet(F);
-    return EXIT_SUCCESS;
-}*/
-int main(){ 
+
+int main(int argc, char **argv){ 
+    
+    int k = atoi(argv[1]);
+    
     cout << endl;
     cout << "=================================================================" << endl;
     cout << "=================== MINIMUM SET COVER PROBLEM ===================" << endl;
@@ -33,38 +30,41 @@ int main(){
     
     set<set<string>> F;
     set<string> U;
-    loadProblem(F,U,10000);
+    loadProblem(F,U,k);
 
     clock_t begin, end;
     double time_spent;
-    begin = clock();
+    // begin = clock();
     // cout << "Calculando el MSCP con el algoritmo de busqueda exhaustiva ... ";
-    // 
-    // C1 = MSCExhaustiveSearch(F2, X2, C1, P1, X2.size());
-    // 
-    // 
+    // C1 = MSCExhaustiveSearch(F, U, C1, P1, U.size());
     // cout << "TERMINADO!" << endl;
-    // cout << "C: ";printSet(C1);
-
-    // cout << "Calculando el MSCP con el algoritmo greedy clasico ... ";
-    // C5 = MSCClassicGreedy(X2,F2);
-    // cout << "TERMINADO!" << endl;
-    // cout << "C: ";printSet(C4);
-    // cout << C4.size();
-
+    // // cout << "C: ";printSet(C1);
+    // end = clock();
+    // printTime((double)(end - begin));
+    begin = clock();
     cout << "Calculando el MSCP con el algoritmo greedy clasico ... ";
     C3 = MSCClassicGreedy(U,F);
     cout << "TERMINADO!" << endl;
+    cout << "Tamano: " << C3.size() << endl;
     // cout << "C: ";printSet(C3);
-
+    end = clock();
+    printTime((double)(end - begin));
+    
+    // begin = clock();
     // cout << "Calculando el MSCP con el algoritmo de busqueda exhaustiva optimizada ... ";
-    // C2 = MSCExhaustiveSearchOp1(nuevoUniverso, X, C2, P2, nuevoUniverso.size());
+    // C2 = MSCExhaustiveSearchOp1(F, U, C2, P2, U.size());
     // cout << "TERMINADO!" << endl;
-    // cout << "C: ";printSet(C2);
-
-    // cout<<"Calculando el MSCP con el algoritmo greedy clasico optimizado ...";
-    // C4 = MSCClassicGreedyOptimize(X,nuevoUniverso,1);
-    // cout<< "TERMINADO!" << endl;
+    // cout << "Tamano: " << C2.size() << endl;
+    // //cout << "C: ";printSet(C2);
+    // end = clock();
+    // printTime((double)(end - begin));
+    
+    begin = clock();
+    cout<<"Calculando el MSCP con el algoritmo greedy clasico optimizado ...";
+    C4 = MSCClassicGreedyOptimize(U,F,3);
+    cout<< "TERMINADO!" << endl;
+    cout << "Tamano: " << C4.size() << endl;
+    
     // cout << "C: ";printSet(C4);
     end = clock();
     printTime((double)(end - begin));
@@ -131,32 +131,48 @@ set<set<string>> MSCClassicGreedy(set<string> X,set<set<string>> F){
     return C;
 }
 
-set<set<string>> MSCClassicGreedyOptimize(set<string> X, set<set<string>> F, int k){   //K=2 es la union de dos cosos
+set<set<string>> MSCClassicGreedyOptimize(set<string> X,set<set<string>> F, int k){
+    set<string> P;
     set<string> U (X); // Sea U un conjunto copia de X, el universo.
-    set<set<string>> R (F); 
-    set<set<string>> C = returnAlone(R,U);  //Encuentra los conjuntos donde hay elemetos que solo estan en el mismo y los agregan a la solución C
-    set<string> S;
-    set<string> L (X);
-    set<set<string>> acum;
-    set<string> suma;
-    int cont = 0;
+    set<set<string>> S;
+    set<set<string>> C = returnAloneES(F,U,C,P); // en C estan los conjuntos que aportan elementos unicos
+    cout<< "F: ";printSet(F);
+    //cout<< "U: ";printSet(U);
+    if(U.empty()){
+        cout << "Solucion encontrada con la reduccion de elem unicos. " << endl;
+        return C;
+    }
     while(!U.empty()){
-        for(set<set<string>>::iterator it=R.begin(); it!=R.end(); ++it){
-            cont++;
-            acum.insert(*it);
-            suma = {};
-            if(cont%k==0){
-                for(set<set<string>>::iterator it1=acum.begin(); it1!=acum.end(); ++it1){
-                    suma = setUnion(suma, *it1);
-                }
-                S=maxS(R,U);
-                U=setDifference(U,S);
-                C.insert(S);
-                acum = {};
-            }
-        }
-
-       
+        S = maxSMod(F,U,k);
+        U = setDifference(U,S); //setSubstract: U = U-S
+        C = setUnion(C,S);
     }
     return C;
 }
+// set<set<string>> MSCClassicGreedyOptimize(set<string> X, set<set<string>> F, int k){   //K=2 es la union de dos cosos
+//     set<string> U (X);
+//     set<set<string>> R (F); 
+//     set<set<string>> C = returnAlone(R,U);  //Encuentra los conjuntos donde hay elemetos que solo estan en el mismo y los agregan a la solución C
+//     set<string> S;
+//     set<string> L (X);
+//     set<set<string>> acum;
+//     set<string> suma;
+//     int cont = 0;
+//     while(!U.empty()){
+//         for(set<set<string>>::iterator it=R.begin(); it!=R.end(); ++it){
+//             cont++;
+//             acum.insert(*it);
+//             suma = {};
+//             if(cont%k==0){
+//                 for(set<set<string>>::iterator it1=acum.begin(); it1!=acum.end(); ++it1){
+//                     suma = setUnion(suma, *it1);
+//                 }
+//                 S=maxS(R,U);
+//                 U=setDifference(U,S);
+//                 C.insert(S);
+//                 acum = {};
+//             }
+//         }
+//     }
+//     return C;
+// }
