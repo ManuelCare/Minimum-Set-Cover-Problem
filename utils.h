@@ -26,4 +26,5 @@ set<set<string>> returnAloneES(set<set<string>> &F, set<string> &X, set<set<stri
 set<set<string>> returnAlone(set<set<string>> &F,set<string> &X);
 set<set<string>> genUniverse(int A, int seed);
 bool setContains(set<string> A, string b);
+void loadProblem(set<set<string>> &F, set<string> &U, int k);
 #endif

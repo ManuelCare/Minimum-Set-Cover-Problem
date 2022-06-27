@@ -10,6 +10,13 @@ set<set<string>> MSCExhaustiveSearch(set<set<string>> F, set<string> X, set<set<
 set<set<string>> MSCExhaustiveSearchOp1(set<set<string>> F, set<string> X, set<set<string>> C, set<string> P,int n);
 set<set<string>> TopDownMSCExhaustiveSearchOp2(set<set<string>> F, set<string> X, set<set<string>> C, set<string> P,int n, int *R);
 set<set<string>> MSCClassicGreedyOptimize(set<string> X, set<set<string>> F, int k);
+/*int main(){
+    set<set<string>> F;
+    set<string> U;
+    loadProblem(F,U,1000);
+    printSet(F);
+    return EXIT_SUCCESS;
+}*/
 int main(){ 
     cout << endl;
     cout << "=================================================================" << endl;
@@ -103,7 +110,7 @@ set<set<string>> MSCExhaustiveSearchOp1(set<set<string>> F, set<string> X, set<s
 
 set<set<string>> TopDownMSCExhaustiveSearchOp2(set<set<string>> F, set<string> X, set<set<string>> C, set<string> P,int n, int *R){
     if (X == P){
-        R[C.size()] = 1;
+        R[C.size()-1] = 1;
         return C;
     }
     else if (R[C.size()-1] > 0){
@@ -114,7 +121,7 @@ set<set<string>> TopDownMSCExhaustiveSearchOp2(set<set<string>> F, set<string> X
     int min = n; // largo de F, cualquier (subconjunto de F <= min)
     for(set<set<string>>::const_iterator it = F.begin(); it != F.end(); ++it){
         temp = MSCExhaustiveSearch(removeFrom(F,(*it)), X, insertionTo(C,(*it)), setUnion(P,(*it)),n);
-        if (temp.size() <= min){ 
+        if (temp.size() <= min && R[C.size()-1]<1){ 
             min = temp.size();
             minSets = temp;
         }

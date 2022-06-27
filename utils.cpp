@@ -178,3 +178,28 @@ bool setContains(set<string> A, string b){   //Verifica si un string esta almace
     }
     return false;
 }
+
+void loadProblem(set<set<string>> &F, set<string> &U,int k){
+    ifstream file("data/rail4284.txt");
+    set<string> tempSet;
+
+    if(!file.is_open()) return; //en caso de que no exista tal archivo, aborta
+
+    int n, m, i=0, j, t; // t es una variable basurero. 
+    string elem;
+    file >> m >> n;
+
+    if(k>n) k=n; // si pides más sets de los que existen, utiliza el maximo posible.
+
+    while(i<k){
+        tempSet.clear();
+        file >> t >> m;
+        for(j=0; j<m; j++){
+            file >> elem;
+            tempSet.insert(elem);
+            U.insert(elem);
+        }
+        F.insert(returnClone(tempSet));
+        i++;
+    }
+}
