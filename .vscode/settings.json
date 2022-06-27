@@ -59,6 +59,7 @@
         "random": "cpp",
         "fstream": "cpp",
         "sstream": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "map": "cpp"
     }
 }

@@ -21,8 +21,9 @@ set<set<string>> getSets(set<string> X, set<set<string>> &F);
 set<set<string>> insertionTo(set<set<string>> A,set<string> B);
 set<set<string>> removeFrom(set<set<string>> A, set<string> B);
 set<set<string>> returnClone(set<set<string>> A);
+set<string> returnClone(set<string> A);
 set<set<string>> returnAloneES(set<set<string>> &F, set<string> &X, set<set<string>> C, set<string> &P);
 set<set<string>> returnAlone(set<set<string>> &F,set<string> &X);
-set<set<string>> genUniverse(int A,int seed);
+set<set<string>> genUniverse(int A, int seed);
 bool setContains(set<string> A, string b);
 #endif

@@ -52,48 +52,43 @@ set<string> setDifference(set<string> A, set<string> B){
 set<string> getUniverse(set<string> &X){
     set<string> temp;
     ifstream file("setcover.csv");
-    string line, Passport, Destination, Requirement;
+    string line, Passport;
     getline(file,line);
-    if (file.is_open()){
-        while(getline(file,line)){
-            stringstream ss(line);
-            getline(ss,Passport,',');
-            X.insert(Passport);
-        }
-        file.close();
+    while(getline(file,line)){
+        stringstream ss(line);
+        getline(ss,Passport,',');
+        X.insert(Passport);
     }
+    file.close();
     return X;
 }
 set<set<string>> getSets(set<string> X, set<set<string>> &F){
+    set<string> temp;
     ifstream file("setcover.csv");
-    string line, Passport, Destination, Requirement;
+    string line, Passport, Destination, Requirement,po;
     getline(file,line);
-    set<string> temp1;
-    set<string> temp2;
-    cout << "temp2: ";printSet(temp2);
     while(getline(file,line)){
-        for(set<string>::iterator it=X.begin(); it!=X.end(); ++it){
+        stringstream ss(line);
+        getline(ss,Passport,',');
+        getline(ss,Destination,',');
+        getline(ss,Requirement,',');
+        string pais = Passport;
+        temp.clear();
+        po = pais;
+        while(!file.eof() && pais == po){
+            if(Requirement == "visa free" ||Requirement =="-1")
+                temp.insert(Destination);
+            getline(file,line);
             stringstream ss(line);
-            getline(ss,Passport,',');
+            getline(ss,pais,',');
             getline(ss,Destination,',');
             getline(ss,Requirement,',');
-            if(Requirement == "visa free" || "-1"){
-                temp1.insert(Destination);
-                if(Passport == *it){
-                    cout << "Pasaporte emitido por: " << Passport;
-                    cout << endl;
-                    cout << "Destino: " << Destination;
-                    cout << endl;
-                    temp2 = setUnion(temp1,temp2);
-                    cout << "temp1: ";printSet(temp1);
-                    cout << "temp2: ";printSet(temp2);
-                    cout << endl;
-                }
-            }
+
         }
+        F.insert(returnClone(temp));
     }
-    printSet(F);
-    return F;
+    file.close();
+    return F;   
 }
 set<set<string>> removeFrom(set<set<string>> A, set<string> B){
     set<set<string>> C (A); // Clona todo lo de A en C 
@@ -109,6 +104,10 @@ set<set<string>> returnClone(set<set<string>> A){
     set<set<string>> C (A); // Clona todo lo de A en C
     return C;
 }
+set<string> returnClone(set<string> A){
+    set<string> C (A); // Clona todo lo de A en C
+    return C;
+} 
 set<set<string>> returnAloneES(set<set<string>> &F, set<string> &X, set<set<string>> C, set<string> &P){   //Entran X con todas las key y F con todos los conjuntos y devuelve los conjuntos donde solo se repite una vez un elemento solo los que se repiten una vez
     set<string> Temp;
     int cont;
@@ -124,7 +123,7 @@ set<set<string>> returnAloneES(set<set<string>> &F, set<string> &X, set<set<stri
             }
         }
         if(cont == 1){
-            P = setUnion(P,Temp); 
+            P = setUnion(P,Temp);
             C.insert(Temp);
             G.erase(Temp);
         }
@@ -163,7 +162,6 @@ set<set<string>> genUniverse(int A, int seed){
     for(int i=0; i<A; i++){   //Cantidad de elementos del universo a crear
         setSize=rand()%27;   //Numero random entre 1 y 26
         for(int j = 0; j<setSize; j++){
-
             num = 97 + rand()%(123-97);   //numero random entre el 97 al 122
             string s(1,char(num));
             TM.insert(s);
