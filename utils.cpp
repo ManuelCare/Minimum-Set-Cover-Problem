@@ -203,3 +203,36 @@ void loadProblem(set<set<string>> &F, set<string> &U,int k){
         i++;
     }
 }
+void loadExample(set<set<string>> &F, set<string> &U){
+    //INFO145 2021 I Clase 15 Pagina 14 ejemplo 2
+    U = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+    set<string> s1 = {"a","b","d","e","f"};
+    set<string> s2 = {"e","f","h","i"};
+    set<string> s3 = {"a","d","g","j"};
+    set<string> s4 = {"b","e","g","h","k"};
+    set<string> s5 = {"c","f","i","l"};
+    // Aportan elementos unicos 
+    set<string> s6 = {"m","n","o",};
+    set<string> s7 = {"p","q","r"};
+    set<string> s8 = {"s","t","u","v"};
+    set<string> s9 = {"w","x","y","z"};
+    // Estos no aportan elementos unicos 
+    set<string> s10 = {"w","z"};
+    set<string> s11 = {"y","z"};
+    set<string> s12 = {"x","y"};
+    F = {s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12};
+
+}
+void printTime(double time){
+    double S;
+    int H, M;
+    S=time/CLOCKS_PER_SEC;
+    M=S/60;
+    S=fmod(S,60);
+    H=M/60;
+    M=M%60;
+    cout << "TIEMPO: ";
+    if(H>0) cout << H << "[H] ";
+    if(M>0) cout << M << "[m] ";
+    cout << S << "[s]" << endl;
+}

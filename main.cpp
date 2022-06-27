@@ -23,40 +23,28 @@ int main(){
     cout << "=================== MINIMUM SET COVER PROBLEM ===================" << endl;
     cout << "=================================================================" << endl;
     cout << endl;
-    //INFO145 2021 I Clase 15 Pagina 14 ejemplo 2
-    set<string> X = {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
-    set<string> s1 = {"a","b","d","e","f"};
-    set<string> s2 = {"e","f","h","i"};
-    set<string> s3 = {"a","d","g","j"};
-    set<string> s4 = {"b","e","g","h","k"};
-    set<string> s5 = {"c","f","i","l"};
-    // Aportan elementos unicos 
-    set<string> s6 = {"m","n","o",};
-    set<string> s7 = {"p","q","r"};
-    set<string> s8 = {"s","t","u","v"};
-    set<string> s9 = {"w","x","y","z"};
-    // Estos no aportan elementos unicos 
-    set<string> s10 = {"w","z"};
-    set<string> s11 = {"y","z"};
-    set<string> s12 = {"x","y"};
-    set<set<string>> F = {s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12};
-    // Aportan elementos unicos 
+    
     set<set<string>> C1, C2, C3, C4, C5;
     set<string> P1, P2;
     
     // set<set<string>> nuevoUniverso = genUniverse(8,300);
     // cout<<"Nuevo universo: "<<endl;
     // printSet(nuevoUniverso);
-
-    set<set<string>> F2;
-    set<string> X2;
-    X2 = getUniverse(X2);
-    F2 = getSets(X2,F2);
     
-    cout << "Calculando el MSCP con el algoritmo de busqueda exhaustiva ... ";
-    C1 = MSCExhaustiveSearch(F2, X2, C1, P1, X2.size());
-    cout << "TERMINADO!" << endl;
-    cout << "C: ";printSet(C1);
+    set<set<string>> F;
+    set<string> U;
+    loadProblem(F,U,10000);
+
+    clock_t begin, end;
+    double time_spent;
+    begin = clock();
+    // cout << "Calculando el MSCP con el algoritmo de busqueda exhaustiva ... ";
+    // 
+    // C1 = MSCExhaustiveSearch(F2, X2, C1, P1, X2.size());
+    // 
+    // 
+    // cout << "TERMINADO!" << endl;
+    // cout << "C: ";printSet(C1);
 
     // cout << "Calculando el MSCP con el algoritmo greedy clasico ... ";
     // C5 = MSCClassicGreedy(X2,F2);
@@ -64,9 +52,9 @@ int main(){
     // cout << "C: ";printSet(C4);
     // cout << C4.size();
 
-    // cout << "Calculando el MSCP con el algoritmo greedy clasico ... ";
-    // C3 = MSCClassicGreedy(X2,F2);
-    // cout << "TERMINADO!" << endl;
+    cout << "Calculando el MSCP con el algoritmo greedy clasico ... ";
+    C3 = MSCClassicGreedy(U,F);
+    cout << "TERMINADO!" << endl;
     // cout << "C: ";printSet(C3);
 
     // cout << "Calculando el MSCP con el algoritmo de busqueda exhaustiva optimizada ... ";
@@ -78,6 +66,8 @@ int main(){
     // C4 = MSCClassicGreedyOptimize(X,nuevoUniverso,1);
     // cout<< "TERMINADO!" << endl;
     // cout << "C: ";printSet(C4);
+    end = clock();
+    printTime((double)(end - begin));
 }
 
 set<set<string>> MSCExhaustiveSearch(set<set<string>> F, set<string> X, set<set<string>> C, set<string> P,int n){

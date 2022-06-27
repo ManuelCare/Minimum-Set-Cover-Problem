@@ -8,6 +8,7 @@
 #include <sstream>
 #include <fstream>
 #include <algorithm>
+#include <cmath>
 using namespace std;
 
 void printSet(set<string> S);
@@ -27,4 +28,6 @@ set<set<string>> returnAlone(set<set<string>> &F,set<string> &X);
 set<set<string>> genUniverse(int A, int seed);
 bool setContains(set<string> A, string b);
 void loadProblem(set<set<string>> &F, set<string> &U, int k);
+void loadExample(set<set<string>> &F, set<string> &U);
+void printTime(double time);
 #endif
