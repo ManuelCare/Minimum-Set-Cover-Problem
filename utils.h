@@ -11,6 +11,13 @@
 #include <cmath>
 using namespace std;
 
+struct Node {
+    set<string> S;
+    set<string> unique;
+    set<string> shared;
+    Node* next = NULL;
+};
+
 void printSet(set<string> S);
 void printSet(set<set<string>> S);
 set<string> maxS(set<set<string>> F, set<string> U);
@@ -32,4 +39,5 @@ bool setContains(set<string> A, string b);
 void loadProblem(set<set<string>> &F, set<string> &U, int k);
 void loadExample(set<set<string>> &F, set<string> &U);
 void printTime(double time);
+set<set<string>> UniqueSets(set<set<string>> &F, set<string> &U);
 #endif
