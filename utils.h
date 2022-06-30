@@ -11,11 +11,15 @@
 #include <cmath>
 using namespace std;
 
-struct Node {
+struct Node{
+    set<string> S = {};
+    set<string> unique = {};
+    set<string> shared = {};
+    Node* next = nullptr;
+};
+struct Node2 {
     set<string> S;
-    set<string> unique;
-    set<string> shared;
-    Node* next = NULL;
+    Node2* next = NULL;
 };
 
 void printSet(set<string> S);
@@ -40,4 +44,9 @@ void loadProblem(set<set<string>> &F, set<string> &U, int k);
 void loadExample(set<set<string>> &F, set<string> &U);
 void printTime(double time);
 set<set<string>> UniqueSets(set<set<string>> &F, set<string> &U);
+void addNode(Node* front,Node* rear,set<string> originalSet ,set<string> uniqueSet, set<string> sharedSet);
+void validateSolution(set<set<string>> sol, set<string> universe);
+set<set<string>> maxSModV2(set<set<string>> &F, set<string> U, int k);
+void refreshOnDataExit(Node *data, Node **front, set<set<string>> &currentSolution, set<string> &kSetUnion);
+void refreshOnDataEntry(set<string> s, Node **front, Node **rear, set<set<string>> &currentSolution, set<string> &kSetUnion);
 #endif

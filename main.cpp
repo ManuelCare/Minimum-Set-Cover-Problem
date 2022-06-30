@@ -12,7 +12,7 @@ set<set<string>> TopDownMSCExhaustiveSearchOp2(set<set<string>> F, set<string> X
 set<set<string>> MSCClassicGreedyOptimize(set<string> X, set<set<string>> F, int k);
 
 int main(int argc, char **argv){ 
-    if(argc!=3)
+    if(argc!=2)
         return EXIT_FAILURE;
     int k = atoi(argv[1]);  // cuantos k conjuntos para el problema??
     int kGO = atoi(argv[2]);           // cuantos k conjuntos para greedy optimizado !!
@@ -23,6 +23,7 @@ int main(int argc, char **argv){
     cout << "=================================================================" << endl;
     cout << endl;
     cout << "Sets del problema: " << k << endl;
+    cout << "K del problema: " << kGO << endl;
     set<set<string>> C1, C2, C3, C4, C5;
     set<string> P1, P2;
     
@@ -47,15 +48,14 @@ int main(int argc, char **argv){
     // end = clock();
     // printTime((double)(end - begin));
     
-    // cout << "Calculando el MSCP con el algoritmo greedy clasico ... \n";
-    // begin = clock();
-    // C3 = MSCClassicGreedy(U,F);
-    // end = clock();
-    // cout << "TERMINADO!" << endl;
-    // cout << "Tamano: " << C3.size() << endl;
-    // // cout << "C: ";printSet(C3);
-    // printTime((double)(end - begin));
-    
+    cout << "Calculando el MSCP con el algoritmo greedy clasico: \n";
+    begin = clock();
+    C3 = MSCClassicGreedy(U,F);
+    end = clock();
+    printTime((double)(end-begin));
+    cout << "SOLUTION SIZE: " << C3.size() << endl;
+    validateSolution(C3,U);
+    cout << endl;
     // begin = clock();
     // cout << "Calculando el MSCP con el algoritmo de busqueda exhaustiva optimizada ... ";
     // C2 = MSCExhaustiveSearchOp1(F, U, C2, P2, U.size());
@@ -66,15 +66,14 @@ int main(int argc, char **argv){
     // printTime((double)(end - begin));
     
     
-    cout<<"Calculando el MSC con el algoritmo greedy clasico optimizado ...\n";
-    begin = clock();
-    C4 = MSCClassicGreedyOptimize(U,F,kGO);
-    end = clock();
-    cout<< "TERMINADO!" << endl;
-    cout << "Tamano: " << C4.size() << endl;
-    cout << "U size: " << U.size();
-    
-    printTime((double)(end - begin));
+    // cout<<"Calculando el MSC con el algoritmo greedy clasico optimizado:\n";
+    // begin = clock();
+    // C4 = MSCClassicGreedyOptimize(U,F,kGO);
+    // end = clock();
+    // printTime((double)(end - begin));
+    // cout << "SOLUTION SIZE: " << C4.size() << endl;
+    // validateSolution(C4,U);
+    // cout << endl;
 }
 
 set<set<string>> MSCExhaustiveSearch(set<set<string>> F, set<string> X, set<set<string>> C, set<string> P,int n){
@@ -146,48 +145,21 @@ set<set<string>> MSCClassicGreedyOptimize(set<string> X,set<set<string>> F, int 
     begin = clock();
     set<set<string>> C = UniqueSets(F,U); // en C estan los conjuntos que aportan elementos unicos
     end = clock();
-    cout << "uniqueSets ";
+    cout << "UNIQUE SETS ";
     printTime((double)(end-begin));
     //cout<< "U: ";printSet(U);
     if(U.empty()){
-        cout << "Solucion encontrada con la reduccion de elem unicos. " << endl;
+        cout << "SOLUTION FOUND WITH UNIQUE SET REDUCTION" << endl;
         return C;
     }
     begin = clock();
     while(!U.empty()){
-        S = maxSMod(F,U,k);
+        S = maxSModV2(F,U,k);
         U = setDifference(U,S); //setSubstract: U = U-S
         C = setUnion(C,S);
     }
     end = clock();
-    cout << "k sets ";
+    cout << "K-SETS ";
     printTime((double)(end-begin));
     return C;
 }
-// set<set<string>> MSCClassicGreedyOptimize(set<string> X, set<set<string>> F, int k){   //K=2 es la union de dos cosos
-//     set<string> U (X);
-//     set<set<string>> R (F); 
-//     set<set<string>> C = returnAlone(R,U);  //Encuentra los conjuntos donde hay elemetos que solo estan en el mismo y los agregan a la solución C
-//     set<string> S;
-//     set<string> L (X);
-//     set<set<string>> acum;
-//     set<string> suma;
-//     int cont = 0;
-//     while(!U.empty()){
-//         for(set<set<string>>::iterator it=R.begin(); it!=R.end(); ++it){
-//             cont++;
-//             acum.insert(*it);
-//             suma = {};
-//             if(cont%k==0){
-//                 for(set<set<string>>::iterator it1=acum.begin(); it1!=acum.end(); ++it1){
-//                     suma = setUnion(suma, *it1);
-//                 }
-//                 S=maxS(R,U);
-//                 U=setDifference(U,S);
-//                 C.insert(S);
-//                 acum = {};
-//             }
-//         }
-//     }
-//     return C;
-// }
